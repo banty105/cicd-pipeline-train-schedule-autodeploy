@@ -1,6 +1,6 @@
 pipeline {
     environment {
-	dockerimagename = "satya105/myimages"    
+	dockerimagename = "satya105/myimages:bestimage"    
     }
     agent none
     stages {
@@ -11,14 +11,14 @@ pipeline {
                 git 'https://github.com/banty105/cicd-pipeline-train-schedule-autodeploy.git'
             }
         }
-	    
+/*	    
         stage('Gradle Build') {
             agent { label 'slaveNode'}
             steps {
                 sh "./gradlew build"
             }
         }
-
+*/
         stage('Docker Image') {
             agent { label 'slaveNode'}
             steps {

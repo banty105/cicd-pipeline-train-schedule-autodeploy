@@ -16,12 +16,14 @@ pipeline {
 		sh 'docker build -t ${dockerimagename} . '
             }
         }
-	    
-	withCredentials([string(credentialsId: 'DOCKER_LOGIN', variable: 'xyz')]) {    
+	        
 	stage('Push to Docker Hub') {
                 steps {
-                    sh "docker login -u satya105 -p ${xyz}"
-		    sh "docker push ${dockerimagename}"
+			script {
+				withCredentials([string(credentialsId: 'DOCKER_LOGIN', variable: 'xyz')]) {
+                                     sh "docker login -u satya105 -p ${xyz}"
+		                     sh "docker push ${dockerimagename}"
+				}		
 		}	
             }
         }

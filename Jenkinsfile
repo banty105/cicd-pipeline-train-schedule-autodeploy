@@ -21,9 +21,11 @@ pipeline {
 	    
 	stage('Push to Docker Hub') {
             agent { label 'slaveNode'}
-            steps {
-                sh "docker login -u satya105 -p ${DOCKER_LOGIN}"
-		sh "docker push ${dockerimagename}"
+	    withCredentials([string(credentialsId: 'DOCKER_LOGIN', variable: 'xyz')]) {
+                steps {
+                    sh "docker login -u satya105 -p ${xyz}"
+		    sh "docker push ${dockerimagename}"
+		}	
             }
         }
 		

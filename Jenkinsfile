@@ -11,21 +11,14 @@ pipeline {
                 git 'https://github.com/banty105/cicd-pipeline-train-schedule-autodeploy.git'
             }
         }
-/*	    
-        stage('Gradle Build') {
-            agent { label 'slaveNode'}
-            steps {
-                sh "./gradlew build"
-            }
-        }
-*/
+
         stage('Docker Image') {
             agent { label 'slaveNode'}
             steps {
 		sh 'docker build -t ${dockerimagename} . '
             }
         }
-/*		
+	    
 	stage('Push to Docker Hub') {
             agent { label 'slaveNode'}
             steps {
@@ -33,9 +26,8 @@ pipeline {
 		sh "docker push ${dockerimagename}"
             }
         }
-*/		
+		
 	stage('Deploy to Kubernetes') {
-            agent { label 'Built-In'}
             steps {
                 sh "kubectl apply -f train-schedule-kube.yml"
             }

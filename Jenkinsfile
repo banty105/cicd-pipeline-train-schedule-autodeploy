@@ -19,7 +19,7 @@ pipeline {
         stage('Docker Image') {
             agent { label 'slaveNode'}
             steps {
-                sh "docker build -t satya105/myimages:bestimage ."
+                sh 'docker build -t satya105/myimages:bestimage .'
             }
         }
 		

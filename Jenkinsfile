@@ -1,42 +1,44 @@
 pipeline {
-    agent any
-    environment {
-        //be sure to replace "bhavukm" with your own Docker Hub username
-        DOCKER_IMAGE_NAME = "satya105/myimages"
-    }
+    agent none
     stages {
-        stage('Build') {
+        
+        stage('SCM Checkout') {
+            agent { label 'slaveNode'}
             steps {
-                echo 'Running build automation'
-                sh './gradlew build --no-daemon'
-                archiveArtifacts artifacts: 'dist/trainSchedule.zip'
+                git 'https://github.com/banty105/cicd-pipeline-train-schedule-autodeploy.git'
             }
         }
-        stage('Build Docker Image') {
-            when {
-                branch 'master'
-            }
+
+        stage('Gradle Build') {
+            agent { label 'slaveNode'}
             steps {
-                script {
-                    app = docker.build(DOCKER_IMAGE_NAME)
-                    app.inside {
-                        sh 'echo Hello, World!'
-                    }
-                }
+                sh ./gradlew build
             }
         }
-        stage('Push Docker Image') {
-            when {
-                branch 'master'
-            }
+
+        stage('Docker Image') {
+            agent { label 'slaveNode'}
             steps {
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_login') {
-                        app.push("${env.BUILD_NUMBER}")
-                        app.push("latest")
-                    }
-                }
+                sh docker build -t satya105/myimages:bestimage .
             }
         }
+		
+	stage('Push to Docker Hub') {
+            agent { label 'slaveNode'}
+            steps {
+                sh docker login -u satya105 -p "${DOCKER_LOGIN}"
+				sh docker push satya105/myimages:bestimage
+            }
+        }
+		
+	stage('Deploy to Kubernetes') {
+            agent { label 'slaveNode'}
+            steps {
+                sh kubectl apply -f train-schedule-kube.yml
+            }
+        }
+		
+		
     }
-}    
+}
+

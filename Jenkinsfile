@@ -1,6 +1,6 @@
 pipeline {
     environment {
-	dockerimagename = "satya105/myimages:bestimage"    
+	dockerimagename = "satya105/myimages"    
     }
     agent none
     stages {
@@ -22,7 +22,7 @@ pipeline {
         stage('Docker Image') {
             agent { label 'slaveNode'}
             steps {
-		sh "docker build -t ${dockerimagename} . "
+		sh 'docker build -t ${dockerimagename} . '
             }
         }
 		

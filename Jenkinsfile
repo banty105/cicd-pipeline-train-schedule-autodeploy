@@ -2,7 +2,7 @@ pipeline {
     environment {
 	dockerimagename = "satya105/myimages:bestimage"    
     }
-    agent any
+    agent { label 'Jenkins'}
     stages {
         
         stage('SCM Checkout') {
@@ -30,7 +30,7 @@ pipeline {
 		
 	stage('Deploy to Kubernetes') {
             steps {
-                sh "kubectl apply -f train-schedule-kube.yml"
+                sh "kubectl apply -f train-schedule-kube.yml --kubeconfig /tmp/admin.conf"
             }
         }	
     }

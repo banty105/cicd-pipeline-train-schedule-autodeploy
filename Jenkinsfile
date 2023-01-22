@@ -35,7 +35,7 @@ pipeline {
         }
 */		
 	stage('Deploy to Kubernetes') {
-            agent { label 'slaveNode'}
+            agent { label 'Built-In Node'}
             steps {
                 sh "kubectl apply -f train-schedule-kube.yml"
             }

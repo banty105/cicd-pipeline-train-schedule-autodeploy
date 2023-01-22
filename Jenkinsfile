@@ -30,7 +30,7 @@ pipeline {
             agent { label 'slaveNode'}
             steps {
                 sh "docker login -u satya105 -p ${DOCKER_LOGIN}"
-		sh "docker push satya105/myimages:bestimage"
+		sh "docker push ${dockerimagename}"
             }
         }
 		

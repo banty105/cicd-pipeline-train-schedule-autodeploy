@@ -10,7 +10,13 @@ pipeline {
                 git 'https://github.com/banty105/cicd-pipeline-train-schedule-autodeploy.git'
             }
         }
-
+/*	    
+	stage('Gradle Build') {
+            steps {
+                sh "./gradlew build"
+            }
+        }
+*/
         stage('Docker Image') {
             steps {
 		sh 'docker build -t ${dockerimagename} . '

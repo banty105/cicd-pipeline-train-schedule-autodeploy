@@ -11,7 +11,7 @@ pipeline {
                 git 'https://github.com/banty105/cicd-pipeline-train-schedule-autodeploy.git'
             }
         }
-
+/*
         stage('Gradle Build') {
             agent { label 'slaveNode'}
             steps {
@@ -33,7 +33,7 @@ pipeline {
 		sh "docker push ${dockerimagename}"
             }
         }
-		
+*/		
 	stage('Deploy to Kubernetes') {
             agent { label 'slaveNode'}
             steps {

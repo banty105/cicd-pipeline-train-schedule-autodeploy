@@ -19,22 +19,22 @@ pipeline {
         stage('Docker Image') {
             agent { label 'slaveNode'}
             steps {
-                sh docker build -t satya105/myimages:bestimage .
+                sh "docker build -t satya105/myimages:bestimage ."
             }
         }
 		
 	stage('Push to Docker Hub') {
             agent { label 'slaveNode'}
             steps {
-                sh docker login -u satya105 -p "${DOCKER_LOGIN}"
-				sh docker push satya105/myimages:bestimage
+                sh "docker login -u satya105 -p ${DOCKER_LOGIN}"
+		sh "docker push satya105/myimages:bestimage"
             }
         }
 		
 	stage('Deploy to Kubernetes') {
             agent { label 'slaveNode'}
             steps {
-                sh kubectl apply -f train-schedule-kube.yml
+                sh "kubectl apply -f train-schedule-kube.yml"
             }
         }
 		

@@ -2,7 +2,7 @@ pipeline {
     environment {
 	dockerimagename = "satya105/myimages:bestimage"    
     }
-    agent { label 'Jenkins'}
+    agent any
     stages {
         
         stage('SCM Checkout') {
